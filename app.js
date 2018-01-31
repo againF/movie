@@ -3,6 +3,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var _ = require('underscore');
 var Movie = require('./models/movie');
+var User= require('./models/user');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
 var port = process.env.PORT || 4000;//使用环境变量的端口或3000端口
@@ -36,6 +37,44 @@ app.get('/', function(req, res) {
 	})
 	
 });
+
+//signup
+app.post('/user/signup', function(req,res) {
+	var _user = req.body.user;
+
+	User.find({name: _user.name}, function(err, user) {
+		if(err) {
+			console.log(err);
+		}
+		if(user.length !== 0) {
+			return res.redirect('/');
+		}
+		else {
+			var user = new User(_user);
+			
+			user.save(function(err, user) {
+				if(err) {
+					console.log(err);
+				}
+				res.redirect('/admin/userlist')
+			})
+		}
+	})
+	
+});
+
+//userlist page
+app.get('/admin/userlist', function(req, res) {
+	User.fetch(function(err, users) {
+		if(err) {
+			console.log(err);
+		}
+		res.render('userlist', {
+			title: '用户列表页',
+			users: users
+		});
+	})
+}); 
 
 //detail page
 app.get('/movie/:id', function(req, res) {

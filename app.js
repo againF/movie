@@ -1,3 +1,5 @@
+import { isMaster } from 'cluster';
+
 var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
@@ -46,10 +48,10 @@ app.post('/user/signup', function(req,res) {
 		if(err) {
 			console.log(err);
 		}
-		if(user.length !== 0) {
+		if(user.length !== 0) {//用已有的用户名再次注册
 			return res.redirect('/');
 		}
-		else {
+		else {//未注册过的用户名
 			var user = new User(_user);
 			
 			user.save(function(err, user) {
@@ -75,6 +77,34 @@ app.get('/admin/userlist', function(req, res) {
 		});
 	})
 }); 
+
+//signin
+app.post('/user/signin', function(req, res) {
+	var _user = req.body.user;
+	var name = _user.name;
+	var password = _user.password;
+	User.findOne({name: name}, function(err, user) {
+		if(err) {
+			console.log(err);
+		}
+		if(!user) {
+			console.log('登录失败，用户未注册')
+			return res.redirect('/');
+		}else {
+			user.comparePassword(password, function(err, isMatch) {
+				if(err) {
+					console.log(err);
+				}
+				if(isMatch) {
+					console.log('signin success!')
+					return res.redirect('/');
+				}else {
+					console.log('signin faild password is not matched')
+				}
+			})
+		}
+	})
+});
 
 //detail page
 app.get('/movie/:id', function(req, res) {

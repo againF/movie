@@ -42,6 +42,18 @@ UserSchema.pre('save', function(next) {
     })
 });
 
+
+UserSchema.method = {
+	comparePassword: function(_password, cb) {
+		bcrypt.compare(_password, this.password, function(err, isMatch) {
+			if(err) {
+				return cb(err);
+			}
+			cb(null, isMatch);
+		})
+	}
+}
+
 UserSchema.statics = {
 	//取出数据库中所有数据
 	fetch: function(cb) {

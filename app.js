@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoStore = require('connect-mongo')(session);
 var serveStatic = require('serve-static');
+var morgan = require('morgan');//HTTP request logger middleware for node.js
 var port = process.env.PORT || 4000;//使用环境变量的端口或3000端口
 var dburl = 'mongodb://127.0.0.1:8081/movie';
 var app = express();
@@ -29,6 +30,13 @@ app.use(session({
 }));
 app.use(serveStatic(path.join(__dirname, 'public')));//告诉express加载静态资源的路径
 app.locals.moment = require('moment');
+//开发环境的配置
+if('development' === app.get('env')) {
+	app.set('showStackError', true);
+	app.use(morgan(':method :url :status'));//日志打印格式
+	app.locals.pretty = true;//页面的源码以不压缩的格式显示
+	mongoose.set('debug', true);
+}
 require('./config/routes')(app);
 app.listen(port);//监听端口
 

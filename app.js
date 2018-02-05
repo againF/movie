@@ -13,7 +13,7 @@ var app = express();
 mongoose.Promise = global.Promise;
 mongoose.connect(dburl,{useMongoClient:true})
 
-app.set('views', './views/pages');//设置视图根目录
+app.set('views', './app/views/pages');//设置视图根目录
 app.set('view engine', 'jade');//设置默认的模板引擎
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))

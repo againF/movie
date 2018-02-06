@@ -14,7 +14,7 @@ module.exports = function(app) {
 
     //user
     app.post('/user/signup', User.signup);
-    app.get('/admin/userlist', User.list);
+    app.get('/admin/user/list',User.signinRequired, User.adminRequired, User.list);
     app.post('/user/signin', User.signin);
     app.get('/logout', User.logout);
     app.get('/showSignin', User.showSignin);
@@ -22,9 +22,9 @@ module.exports = function(app) {
 
     //movie
     app.get('/movie/:id', Movie.detail);
-    app.get('/admin/movie', Movie.new);
-    app.get('/admin/update/:id', Movie.update)
-    app.post('/admin/movie/new', Movie.save)//admin post movie从后台录入页表单提交后电影数据的储存
-    app.get('/admin/list', Movie.list); 
-    app.delete('/admin/list', Movie.del)
+    app.get('/admin/movie/new',User.signinRequired, User.adminRequired, Movie.new);
+    app.get('/admin/movie/update/:id',User.signinRequired, User.adminRequired, Movie.update)
+    app.post('/admin/movie/new',User.signinRequired, User.adminRequired, Movie.save)//admin post movie从后台录入页表单提交后电影数据的储存
+    app.get('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.list); 
+    app.delete('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.del)
 }

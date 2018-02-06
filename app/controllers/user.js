@@ -9,7 +9,7 @@ exports.signup = function(req,res) {
             console.log(err);
         }
         if(user.length !== 0) {//用已有的用户名再次注册
-            return res.redirect('/');
+            return res.redirect('/showSignin');
         }
         else {//未注册过的用户名
             var user = new User(_user);
@@ -18,7 +18,7 @@ exports.signup = function(req,res) {
                 if(err) {
                     console.log(err);
                 }
-                res.redirect('/admin/userlist')
+                res.redirect('/')
             })
         }
     })
@@ -50,7 +50,7 @@ exports.signin = function(req, res) {
         }
         if(!user) {
             console.log('登录失败，用户未注册')
-            return res.redirect('/');
+            return res.redirect('/showSignup');
         }else {
             user.comparePassword(password, function(err, isMatch) {
                 if(err) {
@@ -61,6 +61,7 @@ exports.signin = function(req, res) {
                     req.session.user = user;
                     return res.redirect('/');
                 }else {
+                    return res.redirect('/showSignin');                    
                     console.log('signin faild password is not matched')
                 }
             })
@@ -74,3 +75,17 @@ exports.logout = function(req, res) {
     //delete app.locals.user;
     res.redirect('/');
 };
+
+//showSignup
+exports.showSignup = function(req, res) {
+    res.render('signup', {
+        title: '注册页面'
+    })
+}
+
+//showSignin
+exports.showSignin = function(req, res) {
+    res.render('signin', {
+        title: '登录页面'
+    })
+}

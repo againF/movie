@@ -1,21 +1,30 @@
 var _ = require('underscore');
 var Movie = require('../models/movie');
+var Comment = require('../models/comment');
 
 //detail page
 exports.detail = function(req, res) {
     var id = req.params.id;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
         Movie.findById(id, function(err, movie) {
-            if(err) {
-                console.log(err);
-            }
-            res.render('detail', {
-                title: 'movie ' + movie.title,
-                movie: movie
-            })
+            Comment
+                .find({movie: id})
+                .populate('from', 'name')
+                .exec(function(err, comments) {
+                    console.log(comments)
+                    if(err) {
+                        console.log(err);
+                    }
+                    res.render('detail', {
+                        title: 'movie 详情页',
+                        movie: movie,
+                        comments: comments
+                    })
+                }) 
         })
     }
-};
+}
+
 
 //admin new page
 exports.new = function(req, res) {

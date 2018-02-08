@@ -1,6 +1,7 @@
 var Index = require('../app/controllers/index');
 var User = require('../app/controllers/user');
-var Movie = require('../app/controllers/Movie');
+var Movie = require('../app/controllers/movie');
+var Comment = require('../app/controllers/comment');
 
 module.exports = function(app) {
     //pre handle user
@@ -27,4 +28,7 @@ module.exports = function(app) {
     app.post('/admin/movie/new',User.signinRequired, User.adminRequired, Movie.save)//admin post movie从后台录入页表单提交后电影数据的储存
     app.get('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.list); 
     app.delete('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.del)
+
+    //Comments
+    app.post('/user/comment', User.signinRequired, Comment.save);
 }

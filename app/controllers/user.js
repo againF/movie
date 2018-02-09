@@ -4,11 +4,11 @@ var User= require('../models/user');
 exports.signup = function(req,res) {
     var _user = req.body.user;
 
-    User.find({name: _user.name}, function(err, user) {
+    User.findOne({name: _user.name}, function(err, user) {
         if(err) {
             console.log(err);
         }
-        if(user.length !== 0) {//用已有的用户名再次注册
+        if(user) {//用已有的用户名再次注册
             return res.redirect('/showSignin');
         }
         else {//未注册过的用户名

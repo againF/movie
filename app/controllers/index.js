@@ -5,13 +5,13 @@ exports.index = function(req, res) {
     Category
         .find({})
         .populate({path: 'movies', options: {limit: 5}})
-        .exec(function(err, categorys) {
+        .exec(function(err, categories) {
             if(err) {
                 console.log(err);
             }
             res.render('index', {
                 title: 'movie 首页',
-                categorys: categorys
+                categories: categories
             })
         })
 };

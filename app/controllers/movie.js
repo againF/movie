@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var Movie = require('../models/movie');
 var Comment = require('../models/comment');
+var Category = require('../models/category');
 
 //detail page
 exports.detail = function(req, res) {
@@ -29,18 +30,13 @@ exports.detail = function(req, res) {
 
 //admin new page
 exports.new = function(req, res) {
-    res.render('admin', {
-        title: 'movie 后台录入页',
-        movie: {
-            title: '',
-            doctor: '',
-            country: '',
-            year: '',
-            poster: '',
-            summary: '',
-            language: ''
-        }
-    })
+    Category.find({}, function(err, categories) {
+        res.render('admin', {
+            title: 'movie 后台录入页',
+            categories: categories,
+            movie: {}
+        })
+    }) 
 };
 
 //admin update movie
@@ -49,10 +45,14 @@ exports.update = function(req, res) {
 
     if(id) {
         Movie.findById(id, function(err, movie) {
-            res.render('admin', {
-                title: 'movie 后台更新页',
-                movie: movie
+            Category.find({}, function(err, categories) {
+                res.render('admin', {
+                    title: 'movie 后台更新页',
+                    movie: movie,
+                    categories: categories
+                })
             })
+            
         })
     }
 }
@@ -64,7 +64,7 @@ exports.save = function(req, res) {
     console.log(movieObj)
     var _movie;
     //已经存在数据库中的电影对其更新操作
-    if(typeof id !== 'undefined') {
+    if(id) {
         Movie.findById(id, function(err, movie) {
             if(err) {
                 console.log(err);
@@ -80,21 +80,20 @@ exports.save = function(req, res) {
         })
     }
     else {
-        _movie = new Movie({
-            doctor: movieObj.doctor,
-            title: movieObj.title,
-            language: movieObj.language,
-            country: movieObj.country,
-            summary: movieObj.summary,
-            flash: movieObj.flash,
-            poster: movieObj.poster,						
-            year: movieObj.year
-        });
+        _movie = new Movie(movieObj);
+
+        var categoryId = _movie.category;
         _movie.save(function(err, movie) {
             if(err) {
                 console.log('save failed: ' + err);
             }
-            res.redirect('/movie/' + movie.id);
+
+            Category.findById(categoryId, function(err, category) {
+                category.movies.push(movie._id);
+                category.save(function(err, category) {
+                    res.redirect('/movie/' + movie.id);
+                })
+            })
         });
     }
 }

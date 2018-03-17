@@ -1,4 +1,20 @@
 .container
+  if user && user.role > 10
+    nav.navbar.navbar-default
+      ul.nav.nav-pills
+        li.active
+          a(href="/") 首页
+        li
+          a(href="/admin/movie/list") 电影列表
+        li
+          a(href="/admin/user/list") 用户列表
+        li
+          a(href="/admin/movie/new") 电影录入
+        li
+          a(href="/admin/category/list") 电影分类列表
+        li
+          a(href="/admin/category/new") 电影分类录入
+
   .row
     .page-header.clearfix
       h1= title

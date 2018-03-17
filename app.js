@@ -10,34 +10,34 @@ var morgan = require('morgan');//HTTP request logger middleware for node.js
 var port = process.env.PORT || 4000;//使用环境变量的端口或4000端口
 var dburl = 'mongodb://127.0.0.1:8081/movie';
 var app = express();
-var fs = require('fs')
+var fs = require('fs');
 mongoose.Promise = global.Promise;
-mongoose.connect(dburl,{useMongoClient:true})
+mongoose.connect(dburl,{useMongoClient:true});
 
 //models loading
-var models_path = __dirname + '/app/models'
+var models_path = __dirname + '/app/models';
 var walk = function(path) {
 	fs
 		.readdirSync(path)
 		.forEach(function(file) {
-			var newPath = path + '/' + file
-			var stat = fs.statSync(newPath)
+			var newPath = path + '/' + file;
+			var stat = fs.statSync(newPath);
 
 			if(stat.isFile()) {
 				if(/(.*)\.(js|coffee)/.test(file)) {
-					require(newPath)
+					require(newPath);
 				}
 			}
 			else if(stat.isDirectory()) {
-				walk(newPath)
+				walk(newPath);
 			}
-		})
-}
-walk(models_path)
+		});
+};
+walk(models_path);
 app.set('views', './app/views/pages');//设置视图根目录
 app.set('view engine', 'jade');//设置默认的模板引擎
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse application/json
 app.use(bodyParser.json());

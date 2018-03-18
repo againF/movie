@@ -3,6 +3,7 @@ var User = require('../app/controllers/user');
 var Movie = require('../app/controllers/movie');
 var Comment = require('../app/controllers/comment');
 var Category = require('../app/controllers/category');
+var Demo = require('../app/controllers/demo');
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
 module.exports = function(app) {
@@ -41,4 +42,8 @@ module.exports = function(app) {
     
     //results
     app.get('/results', Index.search);
+
+    //lazy load demo
+    app.get('/demo/lazyload', Demo.lazyload);
+    app.get('/demo/nolazyload', Demo.nolazyload);
 }

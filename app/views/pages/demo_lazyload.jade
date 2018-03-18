@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+    .container
+        h2
+            <div id="TimeShow"></div>
+        h2
+            a(href="/demo/nolazyload") 点我看看不用懒加载是怎么样的吧~
+        each img in imgs
+            .row
+                .col-md-2
+                    img.lazy(src="#{img.temp}", data-original="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.temp}", data-original="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.temp}", data-original="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.temp}", data-original="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.temp}", data-original="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.temp}", data-original="#{img.url}" style="width:100%;")
+    script(src="/js/jquery.lazyload.js")
+    script.
+        $("img.lazy").lazyload({
+            effect: 'fadeIn',
+            event: 'scroll'
+        });
+        //- $(window).bind('load', function(){
+        //-     var timeout = setTimeout(function(){
+        //-     $('img').trigger('sporty')
+        //- }, 3000);
+        //- }); 

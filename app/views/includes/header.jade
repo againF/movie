@@ -1,4 +1,8 @@
 .container
+  script.
+    window.onload = function(){
+      document.getElementById("TimeShow").innerHTML = "加载本页耗时 "+ (new Date().getTime()-t1) +" 毫秒"; 
+    };
   if user && user.role > 10
     nav.navbar.navbar-default
       ul.nav.nav-pills
@@ -14,7 +18,7 @@
           a(href="/admin/category/list") 电影分类列表
         li
           a(href="/admin/category/new") 电影分类录入
-
+  a(href="/demo/lazyload") demo
   .row
     .page-header.clearfix
       h1= title

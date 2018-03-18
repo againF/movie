@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+    .container
+        h2
+            <div id="TimeShow"></div>
+        h2
+            a(href="/demo/lazyload") 点我看看用懒加载是怎么样的吧~
+        each img in imgs
+            .row
+                .col-md-2
+                    img.lazy(src="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.url}" style="width:100%;")
+                .col-md-2
+                    img.lazy(src="#{img.url}" style="width:100%;")

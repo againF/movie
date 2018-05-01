@@ -49,7 +49,8 @@ app.use(session({
 		collection: 'sessions'
 	})
 }));
-app.use(serveStatic(path.join(__dirname, 'public')));//告诉express加载静态资源的路径
+//app.use(serveStatic(path.join(__dirname, 'public')));
+app.use(serveStatic(path.join(__dirname, 'public'),{maxAge: 36000000000}));//告诉express加载静态资源的路径
 app.locals.moment = require('moment');
 //开发环境的配置
 if('development' === app.get('env')) {
